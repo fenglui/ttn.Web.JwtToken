@@ -18,8 +18,32 @@
  * Install-Package ttn.Web.JwtToken
 
 # Getting Started
+
+run api project with hotreload.
  
  ```console
  cd sample
 dotnet watch run
  ```
+
+controller
+
+ ```csharp
+ [Authorize(AuthenticationSchemes = "your_scheme_name")]
+ public class AccountController : Controller
+{
+  // any action of this Controller is identity required
+}
+ ```
+
+action
+
+```csharp
+        [Authorize(AuthenticationSchemes = Consts.AuthenticationScheme)]
+        [HttpPost]
+        public async Task<IActionResult> yourAction([FromForm] string refreshToken)
+        {
+          // ...
+          return Ok("I am sign in");
+        }
+```
