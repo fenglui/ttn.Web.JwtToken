@@ -19,7 +19,7 @@
 
 # Getting Started
 
-run api project with hotreload.
+run api project with hot-reload.
  
  ```console
  cd sample
