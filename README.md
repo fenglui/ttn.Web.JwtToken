@@ -39,11 +39,11 @@ controller
 action
 
 ```csharp
-        [Authorize(AuthenticationSchemes = Consts.AuthenticationScheme)]
-        [HttpPost]
-        public async Task<IActionResult> yourAction([FromForm] string refreshToken)
-        {
-          // ...
-          return Ok("I am sign in");
-        }
+[Authorize(AuthenticationSchemes = Consts.AuthenticationScheme)]
+[HttpPost]
+public async Task<IActionResult> yourAction([FromForm] string refreshToken)
+{
+  // ...
+  return Ok("I am sign in");
+}
 ```
