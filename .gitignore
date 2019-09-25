@@ -3,3 +3,5 @@
 /obj
 /*.nupkg
 /*.nuspec
+/Sample/obj
+/Sample/bin
