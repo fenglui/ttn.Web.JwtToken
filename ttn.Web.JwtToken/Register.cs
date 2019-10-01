@@ -11,7 +11,7 @@ namespace ttn.Web.JwtToken
     /// </summary>
     public static class Register
     {
-        public static void ConfigureJwtTokenServices(this IServiceCollection services, string authenticationScheme = "Bearer", string audience = "api", string issuer = "api", string secretString = "ttn.Web.JwtToken.secretString", int ExpirationInSeconds = 30 * 60)
+        public static void ConfigureJwtTokenServices(this IServiceCollection services, string authenticationScheme = JwtBearerDefaults.AuthenticationScheme, string audience = "api", string issuer = "api", string secretString = "ttn.Web.JwtToken.secretString", int ExpirationInSeconds = 30 * 60)
         {
             services.Configure<TokenProviderOptions>(opt =>
             {
@@ -24,9 +24,8 @@ namespace ttn.Web.JwtToken
             // Services used by identity
             services.AddAuthentication(options =>
             {
-                // options.DefaultScheme = authenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = authenticationScheme;
+                options.DefaultChallengeScheme = authenticationScheme;
 
             }).AddJwtBearer(opt =>
             {
