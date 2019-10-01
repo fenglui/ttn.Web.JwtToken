@@ -5,3 +5,5 @@
 /*.nuspec
 /Sample/obj
 /Sample/bin
+/ttn.Web.JwtToken/obj
+/ttn.Web.JwtToken/bin
