@@ -7,7 +7,7 @@
 
 # Features
 
-- **ASP.NET Core 3.0**
+- **DOTNET STANDARD 2.0**
   - Web API
 
 # Prerequisites:
