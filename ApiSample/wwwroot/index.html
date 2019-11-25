@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>ttn.Web.JwtToken Sample Site</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        #log-content {
+            padding: 36px;
+        }
+
+            #log-content p {
+                line-height: 36px;
+            }
+
+            #log-content .btn-login{
+                color: #FFF;
+                background-color:blueviolet;
+                cursor:pointer;
+                width:120px;
+                line-height:48px;
+                text-align:center;
+                border-radius:5px;
+            }
+    </style>
+</head>
+<body>
+    <div id="log-content">
+
+    </div>
+    <script>
+        var logHtml = ''
+        var isCheckLogin = false
+        function addLog(html) {
+            logHtml += `<p>${html}</p>`
+            $('#log-content').html(logHtml)
+        }
+        $(function () {
+            addLog('jq ready')
+
+            $.post('/api/account/register')
+
+            $('#log-content').on('click', '.btn-login', function () {
+                if (isCheckLogin) {
+                    return
+                }
+                addLog('btn-login clicked')
+                isCheckLogin = true
+                $.ajax({
+                    url: "/api/account/login",
+                    dataType: 'json',
+                    async: true,
+                    data: {
+                        userName: 'admin',
+                        password: 'passpass1'
+                    },
+                    type: 'POST',
+                    success: function (req) {
+                        addLog(`jq post success: ${JSON.stringify(res)}`)
+                    },
+                    complete: function () {
+                        addLog('jq post complete')
+                        isCheckLogin = false
+                    },
+                    error: function (res) {
+                        addLog(`login failed: ${JSON.stringify(res)}`)
+                    }
+                })
+            })
+
+            addLog('post to /api with no token')
+            $.ajax({
+                url: "/api",
+                dataType: 'json',
+                async: true,
+                data: {},
+                type: 'POST',
+                success: function (req) {
+                    addLog(`jq post success: ${JSON.stringify(res)}`)
+                },
+                complete: function () {
+                    addLog('jq post complete')
+                },
+                error: function (res) {
+                    addLog(`jq post error: ${JSON.stringify(res)}`)
+                    addLog(`====================================`)
+                    addLog(`click thebutton to perform an ajax login and try again <div class="btn-login">login</div>`)
+                    addLog(`====================================`)
+                }
+            })
+            //addLog('jq ready')
+        })
+    </script>
+</body>
+</html>
