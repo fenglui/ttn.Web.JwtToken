@@ -147,7 +147,7 @@ namespace ttn.Web.JwtToken
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
-            public string GetToken(ILoginNameModel user)
+        public string GetToken(ILoginNameModel user)
         {
             return GetToken(user.username);
         }
