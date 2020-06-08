@@ -23,6 +23,13 @@ namespace ttn.Web.JwtToken
 
     public static class AuthExtension
     {
+        public static async Task<ClaimsIdentity> AuthenticateAsync<TUser>(this SignInManager<TUser> _signinManager, TUser user) where TUser : class
+        {
+            var principal = await _signinManager.CreateUserPrincipalAsync(user);
+
+            return principal.Identities.First();
+        }
+
         public static async Task<ClaimsIdentity> AuthenticateAsync<TUser>(this SignInManager<TUser> _signinManager, TUser user, string password) where TUser : class
         {
             var passwordSignInResult = await _signinManager.CheckPasswordSignInAsync(user, password, false);
@@ -57,12 +64,32 @@ namespace ttn.Web.JwtToken
             return _options;
         }
 
+        public async Task<TokenResponse> AuthorizeClientAsync<TUser>(UserManager<TUser> _userManager, SignInManager<TUser> _signinManager, string username) where TUser : class
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return null;
+            }
+
+            var identity = await AuthenticateAsync(_userManager, _signinManager, username);
+
+            if (identity == null)
+            {
+                return null;
+            }
+
+            return await IssueJwtAsync(identity);
+        }
+
         public async Task<TokenResponse> AuthorizeClientAsync<TUser>(UserManager<TUser> _userManager, SignInManager<TUser> _signinManager, string username, string password) where TUser : class
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
                 return null;
+            }
 
             var identity = await AuthenticateAsync(_userManager, _signinManager, username, password);
+
             if (identity == null)
             {
                 return null;
@@ -157,9 +184,23 @@ namespace ttn.Web.JwtToken
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
+            {
                 return null;
+            }
 
             return await _signinManager.AuthenticateAsync(user, password);
+        }
+
+        private async Task<ClaimsIdentity> AuthenticateAsync<TUser>(UserManager<TUser> _userManager, SignInManager<TUser> _signinManager, string username) where TUser : class
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return await _signinManager.AuthenticateAsync(user);
         }
     }
 }
