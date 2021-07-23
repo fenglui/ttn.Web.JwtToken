@@ -7,7 +7,7 @@
     <PackageReleaseNotes>Jwt Token Solution for dotnet core.</PackageReleaseNotes>
     <PackageProjectUrl>http://www.tuotuoniu.com/packages/JwtToken</PackageProjectUrl>
     <PackageLicenseUrl>http://www.tuotuoniu.com/packages/license</PackageLicenseUrl>
-    <Version>3.0.2</Version>
+    <Version>3.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

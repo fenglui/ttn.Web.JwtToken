@@ -135,6 +135,7 @@ namespace ttn.Web.JwtToken
 
                 response = new TokenResponse
                 {
+                    UserId = userId,
                     AccessToken = encodedJwt,
                     ExpiresIn = (int)_options.Expiration.TotalSeconds,
                     RefreshToken = refreshToken
@@ -158,6 +159,21 @@ namespace ttn.Web.JwtToken
                     notBefore: now,
                     expires: now.Add(_options.Expiration),
                     signingCredentials: creds);
+        }
+
+        public string GetToken(string userId, string userName)
+        {
+            // push the user’s name into a claim, so we can identify the user later on.
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(ClaimTypes.Name, userName),
+                //new Claim(ClaimTypes.Role, admin)//在这可以分配用户角色，比如管理员 、 vip会员 、 普通用户等
+            };
+
+            JwtSecurityToken jwt = GetSecurityToken(claims);
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
         public string GetToken(string userName)

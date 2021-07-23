@@ -7,6 +7,9 @@ namespace ttn.Web.JwtToken
 {
     public class TokenResponse
     {
+        [JsonIgnore]
+        public string UserId { get; set; }
+
         /// <summary>
         /// Signed Jwt Token for authorizing requests.
         /// </summary>
